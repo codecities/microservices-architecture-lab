@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:17
+    env_file:
+      - ./../order-service/.env
+    container_name: architecture-lab-postgres-orders
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5444:5432"
+    volumes:
+      - postgres_data_orders:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_orders:
