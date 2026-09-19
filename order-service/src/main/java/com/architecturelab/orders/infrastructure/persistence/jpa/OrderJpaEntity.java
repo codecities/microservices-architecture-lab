@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +25,9 @@ public class OrderJpaEntity {
     @Column(nullable = false)
     private String status;
 
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
     public OrderJpaEntity() {
     }
 
@@ -31,12 +35,14 @@ public class OrderJpaEntity {
             UUID id,
             Long customerId,
             BigDecimal total,
-            String status
+            String status,
+            Instant createdAt
     ) {
         this.id = id;
         this.customerId = customerId;
         this.total = total;
         this.status = status;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -53,5 +59,9 @@ public class OrderJpaEntity {
 
     public String getStatus() {
         return status;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 }

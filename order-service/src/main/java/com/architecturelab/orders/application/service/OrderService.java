@@ -2,20 +2,28 @@ package com.architecturelab.orders.application.service;
 
 import com.architecturelab.orders.application.dto.CreateOrderRequest;
 import com.architecturelab.orders.application.dto.OrderResponse;
+import com.architecturelab.orders.application.event.OrderCreatedEvent;
 import com.architecturelab.orders.application.exception.OrderNotFoundException;
+import com.architecturelab.orders.application.port.OrderEventPublisher;
 import com.architecturelab.orders.domain.model.Order;
 import com.architecturelab.orders.domain.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderEventPublisher eventPublisher;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(
+            OrderRepository orderRepository,
+            OrderEventPublisher eventPublisher
+    ) {
         this.orderRepository = orderRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public OrderResponse create(CreateOrderRequest request) {
@@ -26,6 +34,16 @@ public class OrderService {
         );
 
         Order savedOrder = orderRepository.save(order);
+
+        OrderCreatedEvent event = new OrderCreatedEvent(
+                UUID.randomUUID(),
+                savedOrder.getId(),
+                savedOrder.getCustomerId(),
+                savedOrder.getTotal(),
+                Instant.now()
+        );
+
+        eventPublisher.publish(event);
 
         return toResponse(savedOrder);
     }

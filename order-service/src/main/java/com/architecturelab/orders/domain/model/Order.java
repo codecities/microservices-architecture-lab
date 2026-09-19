@@ -1,6 +1,7 @@
 package com.architecturelab.orders.domain.model;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 
 public class Order {
@@ -11,16 +12,20 @@ public class Order {
     private final BigDecimal total;
     private final OrderStatus status;
 
+    private final Instant createdAt;
+
     public Order(
             UUID id,
             Long customerId,
             BigDecimal total,
-            OrderStatus status
+            OrderStatus status,
+            Instant createdAt
     ){
         this.id = id;
         this.customerId = customerId;
         this.total = total;
         this.status = status;
+        this.createdAt = createdAt;
     }
 
     public static Order create(Long customerId, BigDecimal total) {
@@ -28,7 +33,8 @@ public class Order {
                 UUID.randomUUID(),
                 customerId,
                 total,
-                OrderStatus.CREATED
+                OrderStatus.CREATED,
+                Instant.now()
         );
     }
 
@@ -46,5 +52,9 @@ public class Order {
 
     public OrderStatus getStatus() {
         return status;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 }

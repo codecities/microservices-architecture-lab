@@ -28,7 +28,8 @@ public class JpaOrderRepositoryAdapter implements OrderRepository {
                 order.getId(),
                 order.getCustomerId(),
                 order.getTotal(),
-                order.getStatus().name()
+                order.getStatus().name(),
+                order.getCreatedAt()
         );
 
         OrderJpaEntity saved = repository.save(entity);
@@ -37,7 +38,8 @@ public class JpaOrderRepositoryAdapter implements OrderRepository {
                 saved.getId(),
                 saved.getCustomerId(),
                 saved.getTotal(),
-                OrderStatus.valueOf(entity.getStatus())
+                OrderStatus.valueOf(entity.getStatus()),
+                saved.getCreatedAt()
         );
     }
 
@@ -51,7 +53,8 @@ public class JpaOrderRepositoryAdapter implements OrderRepository {
                                 entity.getId(),
                                 entity.getCustomerId(),
                                 entity.getTotal(),
-                                OrderStatus.valueOf(entity.getStatus())
+                                OrderStatus.valueOf(entity.getStatus()),
+                                entity.getCreatedAt()
                         )
                 );
     }
