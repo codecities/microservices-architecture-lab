@@ -2,6 +2,7 @@ package com.architecturelab.orders.application.service;
 
 import com.architecturelab.orders.application.dto.CreateOrderRequest;
 import com.architecturelab.orders.application.dto.OrderResponse;
+import com.architecturelab.orders.application.exception.OrderNotFoundException;
 import com.architecturelab.orders.domain.model.Order;
 import com.architecturelab.orders.domain.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,23 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
+        return toResponse(savedOrder);
+    }
+
+    public OrderResponse findById(UUID id) {
+        Order order = orderRepository
+                .findById(id)
+                .orElseThrow(() -> new OrderNotFoundException(id));
+
+        return toResponse(order);
+    }
+
+    private OrderResponse toResponse(Order order) {
         return new OrderResponse(
-                savedOrder.getId(),
-                savedOrder.getCustomerId(),
-                savedOrder.getTotal(),
-                savedOrder.getStatus().name()
+                order.getId(),
+                order.getCustomerId(),
+                order.getTotal(),
+                order.getStatus().name()
         );
     }
 }
