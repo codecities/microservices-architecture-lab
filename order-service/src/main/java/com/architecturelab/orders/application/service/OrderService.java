@@ -5,9 +5,11 @@ import com.architecturelab.orders.application.dto.OrderResponse;
 import com.architecturelab.orders.application.event.OrderCreatedEvent;
 import com.architecturelab.orders.application.exception.OrderNotFoundException;
 import com.architecturelab.orders.application.port.OrderEventPublisher;
+import com.architecturelab.orders.application.port.OutboxEventRepository;
 import com.architecturelab.orders.domain.model.Order;
 import com.architecturelab.orders.domain.repository.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -16,16 +18,17 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderEventPublisher eventPublisher;
+    private final OutboxEventRepository outboxEventRepository;
 
     public OrderService(
             OrderRepository orderRepository,
-            OrderEventPublisher eventPublisher
+            OutboxEventRepository outboxEventRepository
     ) {
         this.orderRepository = orderRepository;
-        this.eventPublisher = eventPublisher;
+        this.outboxEventRepository = outboxEventRepository;
     }
 
+    @Transactional
     public OrderResponse create(CreateOrderRequest request) {
 
         Order order = Order.create(
@@ -43,7 +46,7 @@ public class OrderService {
                 Instant.now()
         );
 
-        eventPublisher.publish(event);
+        outboxEventRepository.save(event);
 
         return toResponse(savedOrder);
     }

@@ -4,10 +4,9 @@ import com.architecturelab.orders.domain.model.Order;
 import com.architecturelab.orders.domain.model.OrderStatus;
 import com.architecturelab.orders.domain.repository.OrderRepository;
 import com.architecturelab.orders.infrastructure.persistence.jpa.OrderJpaEntity;
-import com.architecturelab.orders.infrastructure.persistence.jpa.SpringDataOrderRepository;
+import com.architecturelab.orders.infrastructure.persistence.jpa.repository.SpringDataOrderRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
