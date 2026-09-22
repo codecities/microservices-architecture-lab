@@ -11,7 +11,19 @@ services:
     ports:
       - "5444:5432"
     volumes:
-      - postgres_data_orders:/var/lib/postgresql/data
+      - postgres_orders_data:/var/lib/postgresql/data
+
+  postgres-payments:
+    image: postgres:17
+    container_name: architecture-lab-postgres-payments
+    environment:
+      POSTGRES_DB: payments
+      POSTGRES_USER: architecture
+      POSTGRES_PASSWORD: architecture
+    ports:
+      - "5445:5432"
+    volumes:
+      - postgres_payments_data:/var/lib/postgresql/data
 
   kafka:
     image: apache/kafka:4.3.1
@@ -43,4 +55,5 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
 volumes:
-  postgres_data_orders:
+  postgres_orders_data:
+  postgres_payments_data:
