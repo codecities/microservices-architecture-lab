@@ -1,7 +1,7 @@
 package com.architecturelab.payments.infrastructure.messaging.kafka;
 
 import com.architecturelab.payments.application.event.OrderCreatedEvent;
-import com.architecturelab.payments.application.event.service.PaymentService;
+import com.architecturelab.payments.application.service.PaymentService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import tools.jackson.core.JacksonException;
