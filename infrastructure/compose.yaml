@@ -54,6 +54,30 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: architecture-lab-prometheus
+
+    ports:
+      - "9099:9090"
+
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: architecture-lab-grafana
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+    depends_on:
+      - prometheus
+
 volumes:
   postgres_orders_data:
   postgres_payments_data:
+  grafana_data:
