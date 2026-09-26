@@ -91,6 +91,12 @@ services:
       - "4317:4317"
       - "4318:4318"
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: architecture-lab-jaeger
+    ports:
+      - "16686:16686"
+
 volumes:
   postgres_orders_data:
   postgres_payments_data:

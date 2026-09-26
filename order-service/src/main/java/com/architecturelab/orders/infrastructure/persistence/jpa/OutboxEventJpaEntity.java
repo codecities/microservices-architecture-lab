@@ -30,7 +30,14 @@ public class OutboxEventJpaEntity {
     @Column(nullable = false)
     private Instant occurredAt;
 
+    @Column
     private Instant publishedAt;
+
+    @Column
+    private String traceparent;
+
+    @Column
+    private String tracestate;
 
     public OutboxEventJpaEntity () {
     }
@@ -41,7 +48,9 @@ public class OutboxEventJpaEntity {
             String aggregateType,
             String eventType,
             String payload,
-            Instant occurredAt
+            Instant occurredAt,
+            String traceparent,
+            String tracestate
     ) {
         this.id = id;
         this.aggregateId = aggregateId;
@@ -49,6 +58,8 @@ public class OutboxEventJpaEntity {
         this.eventType = eventType;
         this.payload = payload;
         this.occurredAt = occurredAt;
+        this.traceparent = traceparent;
+        this.tracestate = tracestate;
     }
 
     public UUID getId() {
@@ -77,6 +88,14 @@ public class OutboxEventJpaEntity {
 
     public Instant getPublishedAt() {
         return publishedAt;
+    }
+
+    public String getTraceparent() {
+        return traceparent;
+    }
+
+    public String getTracestate() {
+        return tracestate;
     }
 
     public void markAsPublished() {
